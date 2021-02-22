@@ -11,31 +11,35 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonFormatTypes;
+
+import br.com.andre.springbootcourse.entities.enums.OrderStatus;
 
 @Entity
 @Table(name = "tb_order")
 public class Order {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
 	private Instant moment;
-	
+
+	private Integer orderStatus;
+
 	@ManyToOne
 	@JoinColumn(name = "client_id")
 	private User client;
-	
+
 	public Order() {
-		
+
 	}
 
-	public Order(Long id, Instant moment, User user) {
+	public Order(Long id, Instant moment, OrderStatus orderStatus, User user) {
 		super();
 		this.id = id;
 		this.moment = moment;
+		setOrderStatus(orderStatus);
 		this.client = user;
 	}
 
@@ -55,6 +59,16 @@ public class Order {
 		this.moment = moment;
 	}
 
+	public OrderStatus getOrderStatus() {
+		return OrderStatus.valueOf(orderStatus);
+	}
+
+	public void setOrderStatus(OrderStatus orderStatus) {
+		if(orderStatus != null) {
+			this.orderStatus = orderStatus.getCode();
+		}
+	}
+
 	public User getclient() {
 		return client;
 	}
@@ -67,9 +81,10 @@ public class Order {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((client == null) ? 0 : client.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((moment == null) ? 0 : moment.hashCode());
-		result = prime * result + ((client == null) ? 0 : client.hashCode());
+		result = prime * result + ((orderStatus == null) ? 0 : orderStatus.hashCode());
 		return result;
 	}
 
@@ -82,6 +97,11 @@ public class Order {
 		if (getClass() != obj.getClass())
 			return false;
 		Order other = (Order) obj;
+		if (client == null) {
+			if (other.client != null)
+				return false;
+		} else if (!client.equals(other.client))
+			return false;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -92,18 +112,14 @@ public class Order {
 				return false;
 		} else if (!moment.equals(other.moment))
 			return false;
-		if (client == null) {
-			if (other.client != null)
-				return false;
-		} else if (!client.equals(other.client))
+		if (orderStatus != other.orderStatus)
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "Order [id=" + id + ", moment=" + moment + ", user=" + client + "]";
+		return "Order [id=" + id + ", moment=" + moment + ", orderStatus=" + orderStatus + ", client=" + client + "]";
 	}
-	
-	
+
 }
