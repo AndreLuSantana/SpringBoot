@@ -1,8 +1,5 @@
 package br.com.andre.springbootcourse.resources;
 
-import java.util.List;
-
-import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,8 +18,8 @@ public class OrderResource {
 	private OrderService service;
 	
 	@GetMapping
-	public ResponseEntity<List<Order>> findAll(){
-		List<Order> list = service.findAll();
+	public ResponseEntity<Iterable<Order>> findAll(){
+		Iterable<Order> list = service.findAll();
 		return ResponseEntity.ok().body(list);
 	}
 	

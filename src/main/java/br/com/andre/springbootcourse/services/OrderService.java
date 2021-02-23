@@ -1,6 +1,5 @@
 package br.com.andre.springbootcourse.services;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,7 @@ public class OrderService {
 	@Autowired
 	private OrderRepository repository;
 	
-	public List<Order> findAll(){
+	public Iterable<Order> findAll(){
 		return repository.findAll();
 	}
 	
