@@ -25,7 +25,7 @@ public class UserResource {
 	@Autowired
 	private UserService service;
 	
-	@GetMapping
+	@GetMapping//consultar
 	public ResponseEntity<List<User>> findAll(){
 		List<User> list = service.findAll();
 		return ResponseEntity.ok().body(list);
@@ -37,7 +37,7 @@ public class UserResource {
 		return ResponseEntity.ok().body(obj);
 		}
 	
-	@PostMapping
+	@PostMapping//incluir
 	public ResponseEntity<User> insert(@RequestBody User user){ //@RequestBody -> fará a desserialização do Json em OBJ User 
 		user = service.insert(user);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId()).toUri();
@@ -46,13 +46,13 @@ public class UserResource {
 		//Usar o 'created' 
 	}
 	
-	@DeleteMapping(value ="/{id}")
+	@DeleteMapping(value ="/{id}")//delete
 	public ResponseEntity<Void> delete(@PathVariable Long id){
 		service.deleteById(id);
 		return ResponseEntity.noContent().build();
 	}
 	
-	@PutMapping(value = "/{id}")
+	@PutMapping(value = "/{id}") //update
 	public ResponseEntity<User> update(@PathVariable Long id, @RequestBody User user){
 		user = service.update(id, user);
 		return ResponseEntity.ok().body(user);
